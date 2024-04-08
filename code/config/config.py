@@ -25,7 +25,7 @@ Following part are some basic config, only use when finetune,
 which are not recommended to change when using the code.
 ==============================================================
 """
-regenerate_graphdata = True 
+regenerate_graphdata = False
 specific_config = True
 
 # combine ratio config, change if needed
