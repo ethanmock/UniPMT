@@ -11,7 +11,7 @@ others should be ony a whole file to be splitted by code.
 ==========================================================================
 """
 
-data_folder = 'pt_zeroshot1v1neg'
+data_folder = 'pt_zero'
 # whether run test
 
 ablate_pm = False 
