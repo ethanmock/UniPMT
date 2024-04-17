@@ -5,7 +5,7 @@ The code for the model UniPMT proposed in the paper: UniPMT: A Unified Deep Fram
 
 ### Requirements:
 
-**Operating System**: Linux Ubuntu 18.24.
+**Operating System**: Linux Ubuntu 20.04.
 
 **Software dependencies and software versions**: please see `./code/requirements.txt`
 
