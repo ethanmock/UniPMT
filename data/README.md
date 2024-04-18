@@ -1,3 +1,3 @@
 ## To get the data
 
-Since the dataset is large. We store the data in an external space. We will provide the dataset as a supplementary file.
+Since the dataset is large, we provide it as a supplementary file with the submission. 
