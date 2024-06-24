@@ -1,3 +1,3 @@
 ## To get the data
 
-Since the dataset is large, we provide it as a supplementary file with the submission. 
+Since the dataset is large, you can download the full dataset from google drive link: 
