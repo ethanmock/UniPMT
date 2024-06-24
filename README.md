@@ -1,5 +1,5 @@
 # UniPMT
-The code for the model UniPMT proposed in the paper: UniPMT: A Unified Deep Framework for Peptide, MHC, and TCR Binding Prediction
+The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unified Deep Framework for Peptide, MHC, and TCR Binding Prediction
 
 ## To run the code:
 
@@ -15,8 +15,9 @@ The code for the model UniPMT proposed in the paper: UniPMT: A Unified Deep Fram
 
 ### Instructions
 1. Install the required packages in requirement.py: `pip install -r requirements.txt`. **Normal install time**: within 1 hour.
-2. Input the dataset to run in "data_folder" variable in code/config/config.py (e.g., `data_folder = pt_zeroshot1v1neg`)
-3. Run the evaluation through `python main.py`. **Expected run time**: within 1 min.
+2. Download the datasets (see in `./data/` folder).
+3. Input the dataset to run in "data_folder" variable in code/config/config.py (e.g., `data_folder = pt_zeroshot1v1neg`)
+4. Run the evaluation through `python main.py`. **Expected run time**: within 1 min.
 
 
 ### Expected output
