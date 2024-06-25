@@ -16,11 +16,16 @@ The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unif
 ### Instructions
 1. Install the required packages in requirement.py: `pip install -r requirements.txt`. **Normal install time**: within 1 hour.
 2. Download the datasets (see in `./data/` folder)，and put the datasets in that folder, e.g., `./data/pmt_pmt/`.
-3. Specify the config file (`code/config/config.py`):
-   - a Set the dataset to run, e.g., `data_folder = pmt_pmt`.
-   - b Set whether to run ablate study. e.g., `ablate_pm = True` means no using PM information. All set to `False` means using the full UniPMT.
-   - c Dataset specific configs are in their corresponding config files, e.g., `./config/pmt.py`, which are not recommended to modify.
-4. Run the evaluation through `python main.py`. **Expected run time**: within 1 min.
+3. Reproduce the results:
+ - To reproduce the **PMT** results:
+   - Modifiy the `code/config/config.py` file: `data_folder = pmt_pmt`.
+   - Run the evaluation through `python main.py`. Expected runing time: within 1 min.
+ - To reproduce the **PT zero-shot** results:
+   - Modifiy the `code/config/config.py` file: `data_folder = pt_zero`.
+   - Run the evaluation through `python main.py`. Expected runing time: within 1 min.
+- To reproduce the **PM** results:
+  - Modifiy the `code/config/config.py`y file: `data_folder = pm_iedb`
+  - Run the evaluation through `python main.py`. Expected runing time: within 1 min.
 
 
 ### Expected output
