@@ -11,13 +11,15 @@ others should be ony a whole file to be splitted by code.
 ==========================================================================
 """
 
-data_folder = 'pt_zero'
+data_folder = 'pm_iedbsame'
 # whether run test
+run_test = False
 
-ablate_pm = False 
-ablate_pt = False 
-ablate_pmt = False 
- 
+ablate_pm = False
+ablate_pt = False
+ablate_pmt = False
+
+pmt_run_negative = 10
 
 """
 ==============================================================
@@ -25,8 +27,12 @@ Following part are some basic config, only use when finetune,
 which are not recommended to change when using the code.
 ==============================================================
 """
-regenerate_graphdata = False
+regenerate_graphdata = False 
 specific_config = True
+
+# sample information
+sample_m = False 
+sample_num = 1
 
 # combine ratio config, change if needed
 pm_weight = 0.1
@@ -35,12 +41,14 @@ pmt_weight = 0.1
 
 # model config
 seed = 3406
-batch_size = 512 
+batch_size = 256 
 epoch_num = 1000
-gnn_out_emb_size = 256
-emb_size_hid = 1280
-hidden_size = 1024
-out_emb_size = 256
+lr = 0.00001
+reg_lambda = 0.00001
+gnn_out_emb_size = 1280 
+emb_size_hid = gnn_out_emb_size 
+hidden_size = 1280 
+out_emb_size = gnn_out_emb_size 
 test_size = 0.2
 
 # basic information of data and model store
@@ -54,7 +62,10 @@ pmt_neg_sample = 0
 pm_neg_sample = 0
 pt_neg_sample = 0
 
-model_path = f"../output/model/model_{task}_{dataname}.pt"  # must be speccified
+# train config
+## get current time in format: 2019-12-12-12-12-12
+#start_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
+model_path = f"../output/model/model_{task}_{dataname}.pt"  # if run_test = True, must be speccified
 directory = os.path.dirname(model_path)
 if not os.path.exists(directory):
     os.makedirs(directory)
@@ -64,6 +75,11 @@ pt_threshold = 0.5
 pmt_threshold = 0.5
 pm_threshold = 0.5
 
+# test config
+test_model = f"../output/model/model_{task}_{dataname}.pt"  # if run_test = True, must be speccified
+test_file_name = "example"
+test_file = f"../predict/{test_file_name}.csv"
+test_result = f"../predict/result_{test_file_name}.csv"
 
 """
 ==============================================================

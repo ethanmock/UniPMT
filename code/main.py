@@ -6,6 +6,7 @@ import config.config as config
 
 def main():
     path = '../data/{}/meta'.format(config.data_folder)
+    print(f"processing {config.data_folder}")
     if config.regenerate_graphdata:
         # remove path/processed folder
         import shutil
@@ -18,7 +19,7 @@ def main():
     print("Start Testing...")
     # load model
     tester.load_model(config.model_path)
-    tester.evaluate(0, evaltask=config.task)
+    tester.evaluate(0, evaltask=[config.task])
         
 
 if __name__ == '__main__':

@@ -41,26 +41,6 @@ class Dataset(object):
             print('please regenerate graph data')
             exit()
         
-
-        '''
-        pos = 0
-        neg = 0
-        for item in self.pm_data:  # iterate all the item in pmt test
-            if item[2] == 1:
-                pos = pos +1
-            else:
-                neg = neg +1
-
-        pos1 = 0
-        neg1= 0
-        for item in self.pt_data:  # iterate all the item in pmt test
-            if item[2] == 1:
-                pos1 = pos1 +1
-            else:
-                neg1 = neg1 +1
-        '''
-        
-        
         self.pm_dataset = GeneralDataset(self.pm_data)
         self.pt_dataset = GeneralDataset(self.pt_data)
         self.pmt_dataset = GeneralDataset(self.pmt_data)
@@ -115,7 +95,6 @@ class GraphDataset(InMemoryDataset):
         pass
 
     def read_data(self):
-
         try:
             self.pmt_data = pickle.load(open(self.pmt_file, 'rb'))
             self.pmt_data = np.array(self.pmt_data)
@@ -142,9 +121,6 @@ class GraphDataset(InMemoryDataset):
             self.pm_data_test = pickle.load(open(pm_file_test, 'rb'))
             self.pm_data = np.array(self.pm_data)
             self.pm_data_test = np.array(self.pm_data_test)
-        #self.pmt_data, self.pmt_data_test = train_test_split(self.pmt_data, test_size=config.test_size, random_state=config.seed)
-        #label = self.pt_data[:, 0]
-        #self.pt_data, self.pt_data_test = train_test_split(self.pt_data, test_size=config.test_size, random_state=42, stratify=label)
         try:
             self.pt_data = pickle.load(open(self.pt_file, 'rb'))
             self.pt_data = np.array(self.pt_data)
@@ -153,15 +129,9 @@ class GraphDataset(InMemoryDataset):
         except:
             self.pt_data = pickle.load(open(self.pt_file_train, 'rb'))
             self.pt_data_test = pickle.load(open(self.pt_file_test, 'rb'))
-            #self.pt_data = self.pt_data + self.pt_data_test
             self.pt_data = np.array(self.pt_data)
             self.pt_data_test = np.array(self.pt_data_test)
-            #splitter = CustomTrainTestSplit(data=self.pt_data, split_index=2) 
-            #self.pt_data, self.pt_data_test = splitter.split()
-        #splitter = CustomTrainTestSplit(data=self.pt_data, split_index=2) 
-        #self.pt_data, self.pt_data_test = splitter.split()
-        #self.pt_data, self.pt_data_test = train_test_split(self.pt_data, test_size=config.test_size, random_state=config.seed, stratify=label)
-
+            
         
         if config.task == 'pt':
             # regen data for pt train/test, especially for pmt dataset
@@ -209,7 +179,28 @@ class GraphDataset(InMemoryDataset):
                     
                 time2 = datetime.datetime.now()
                 duration = time2 - time1
-                print(duration) 
+                print(duration)
+
+                print("add redundance, regenerate pm data train/test")
+                pm_list = []
+                pm_test_list = []
+                pmt_tmp = self.pmt_data_test[:, [0, 1]]
+                all_pm_data = np.concatenate((self.pm_data, self.pm_data_test), axis=0)
+                all_pm_data_pos = all_pm_data[all_pm_data[:, 2] == 1]
+                all_pm_data_neg = all_pm_data[all_pm_data[:, 2] == 0]
+                for pm in all_pm_data_pos:
+                    if (np.all(np.array([pm[0], pm[1]]) == pmt_tmp, axis=1)).sum() > 0:
+                        pm_test_list.append(pm)
+                    else:
+                        pm_list.append(pm)
+                self.pm_data = np.array(pm_list)
+                self.pm_data_test = np.array(pm_test_list)
+
+                neg_pm, neg_pm_test = train_test_split(all_pm_data_neg, test_size=config.test_size,
+                                                       random_state=config.seed)
+
+                self.pm_data = np.concatenate((self.pm_data, neg_pm), axis=0)
+                self.pm_data_test = np.concatenate((self.pm_data_test, neg_pm_test), axis=0)
 
         elif config.task == 'pm':
             # regen data for pm train/test, especially for pm dataset
@@ -231,9 +222,6 @@ class GraphDataset(InMemoryDataset):
                 time2 = datetime.datetime.now()
                 duration = time2 - time1
                 print(duration)
-            self.pmt_data, self.pmt_data_test = train_test_split(self.pmt_data, test_size=config.test_size, random_state=config.seed)
-            self.pt_data, self.pt_data_test = train_test_split(self.pt_data, test_size=config.test_size, random_state=config.seed)
-        
             
 
         self.statics = pickle.load(open(self.statics_file, 'rb'))
@@ -261,7 +249,9 @@ class GraphDataset(InMemoryDataset):
 
         print('process pm data')
         pm_edges = [[], []]
+        pt_edges = [[], []]
         pm_set = set()
+        pt_set = set()
         if not config.ablate_pm:
             for triple in self.pm_data:
                 if triple[2] == 1:
@@ -273,19 +263,22 @@ class GraphDataset(InMemoryDataset):
         
         if not config.ablate_pmt:
             for triple in self.pmt_data:
-                if (triple[0], triple[1]) in pm_set:
-                    continue
-                pm_edges[0].append(triple[0])
-                pm_edges[1].append(triple[1])
-                pm_set.add((triple[0], triple[1]))
+                if (triple[0], triple[1]) not in pm_set:
+                    pm_edges[0].append(triple[0])
+                    pm_edges[1].append(triple[1])
+                    pm_set.add((triple[0], triple[1]))
+
+                if (triple[0], triple[2]) not in pt_set:
+                    pt_edges[0].append(triple[0])
+                    pt_edges[1].append(triple[2])
+                    pt_set.add((triple[0], triple[2]))
 
         data['p', 'pm_link', 'm'].edge_index = torch.tensor(pm_edges, dtype=torch.int64)
 
         print('process pt data')
-        pt_edges = [[], []]
         if not config.ablate_pt:
             for triple in self.pt_data:
-                if triple[2] == 1:
+                if triple[2] == 1 and (triple[0],triple[1]) not in pt_set:
                     pt_edges[0].append(triple[0])
                     pt_edges[1].append(triple[1])
         

@@ -1,5 +1,3 @@
-import pdb
-
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader
@@ -26,7 +24,6 @@ class Tester():
         self.m_num = self.graph['m'].x.shape[0]
         self.pt_m_dict = data.graph_dataset.pt_m_dict
         meta = self.graph.metadata()
-
 
         pm_dataset = data.pm_dataset
         pt_dataset = data.pt_dataset
@@ -147,7 +144,6 @@ class Tester():
             # pt_auc = self.cal_auc_by_group(p_list, pt_pred_list, label_list_pt)
             pt_auc = roc_auc_score(label_list_pt, pt_pred_list)
             y_pred_label = [1 if prob >= config.pt_threshold else 0 for prob in pt_pred_list]
-            pt_acc = accuracy_score(label_list_pt, y_pred_label)
             pt_pre, pt_rec, _ = precision_recall_curve(label_list_pt, pt_pred_list)
             pt_prauc = auc(pt_rec, pt_pre)
             print(f"PT AUC: {pt_auc:.4f}, PT PRAUC: {pt_prauc:.4f}", end=' ')
@@ -172,7 +168,6 @@ class Tester():
             all_labels = np.concatenate([np.ones(pmt_pos_all.shape[0]), np.zeros(pmt_neg_all.shape[0])])
             pmt_auc = roc_auc_score(all_labels, all_preds)
             y_pred_label = [1 if prob >= config.pmt_threshold else 0 for prob in all_preds]
-            pmt_acc = accuracy_score(all_labels, y_pred_label)
 
             pmt_pre, pmt_rec, pmt_thr=precision_recall_curve(all_labels, all_preds)
             pmt_prauc = auc(pmt_rec,pmt_pre)
@@ -190,7 +185,7 @@ class Tester():
         self.model.load_state_dict(torch.load(model_path))
         self.model.to(self.device)
 
-        gnn_out = self.model.gnn_learn(self.graph, False)
+        gnn_out = self.model.gnn_learn(self.graph)
         self.p_out_emb = gnn_out['p']
         self.m_out_emb = gnn_out['m']
         self.t_out_emb = gnn_out['t']
