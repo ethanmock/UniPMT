@@ -1,6 +1,6 @@
-pm_weight = 0.35 #0.35
-pt_weight = 0.0001 #0.0001
-pmt_weight = 0.0001 #0.0001
+pm_weight = 0.35 
+pt_weight = 0.0001 
+pmt_weight = 0.0001 
 
 lr = 0.00001
 reg_lambda = 0.00001
