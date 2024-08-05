@@ -9,7 +9,7 @@ The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unif
 
 **Software dependencies and software versions**: please see `./code/requirements.txt`
 
-**Hardware**: CPU: Intel@ Xeon(R) Platinum 8360Y CPU @ 2.40GHzx 144, GPU: Nvidia A100
+**Hardware**: CPU: Intel@ Xeon(R) Platinum 8360Y CPU @ 2.40GHzx 144, GPU: Nvidia A100 (for training); Nvidia A100 or Nvidia 3090 (for evaluation)
 
 
 
@@ -19,10 +19,10 @@ The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unif
 3. Download the model file (see in `./output/model/` folder) and put the trained model file in that folder, e.g., `./output/model/model_pmt_pmt.pt`
  - To reproduce the **PMT** results:
    - Modifiy the `code/config/config.py` file: `data_folder = pmt_pmt`.
-   - Run the evaluation through `python main.py`. Expected runing time: within 1 min.
+   - Run the evaluation through `python main.py`. Expected runing time: within 1 min on Nvidia 3090/5 seconds on Nvidia A100.
 - To reproduce the **PM** results:
   - Modifiy the `code/config/config.py`y file: `data_folder = pm_iedbsame`
-  - Run the evaluation through `python main.py`. Expected runing time: within 1 min.
+  - Run the evaluation through `python main.py`. Expected runing time: within 1 min on Nvidia 3090/5 seconds on Nvidia A100.
 
 
 ### Expected output
@@ -41,7 +41,7 @@ The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unif
    - Remove duplicates and anomalies from the data.
    - Create edge sets E for P-M, P-T, and P-M-T bindings.
    - Represent peptides (P), MHCs (M), and TCRs (T) as nodes, forming a heterogeneous graph G(V, E).
-
+  
 2. **Initial Embedding Representation**
    - Generate initial embeddings for P and T nodes using the ESM method:
      hp, ht <- ESM(P, T)
@@ -88,4 +88,3 @@ The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unif
        - Update model parameters through minimizing L.
      - Check for convergence or stopping criteria.
    - Continue training until the model converges or meets predefined stopping criteria.
-
