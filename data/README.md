@@ -11,11 +11,12 @@ Put the downloaded datasets inside this folder, e.g., `./pmt_pmt/`.
 2. stage = {train, test}, representing the running stage, the train dataset is only used for training the model, and the test dataset is only used for evaluating the model.
 
 #### Files:
-1. files starting with "edges_": contain the main data for the corresponding task, e.g., for pm tasks, the file, "edges_pm_train.csv", is the training dataset for pm task containing three columns: Peptide, MHC, Label. Note that if there is only one file for the task without "_train/test" as the sufix, the train/test random split is done in data preprocessing procedure.
+1. files starting with "edges_": contain the main data for the corresponding task, e.g., for pm tasks, the file, `edges_pm_train.csv`, is the training dataset for pm task containing three columns: Peptide, MHC, Label. Note that if there is only one file for the task without "_train/test" as the sufix, the train/test random split is done in data preprocessing procedure.
 2. files starting with "nodes_": contain the mapping between the ID in files with "edges_" with their human-understandable representations. For example, TCR t2: CASGGGGFQETQYF, where t2 is the ID used in edges file and CASGGGGFQETQYF is the TCR sequence.
-3. "peptides.csv", "pseudoseqs.csv", and "tcr.csv": the initial embedding of peptides, pseudoseqs and tcr discussed in Section 2.1 of our paper.
+3. `peptides.csv`, `pseudoseqs.csv`, and `tcr.csv`: the initial embedding of peptides, pseudoseqs and tcr discussed in Section 2.1 of our paper.
+4. For easy geting the full human-understrandable representations of train and test sets, we put the raw datasets in `raw/` folder
 
-
+ 
 #### "edges_" File Example
 
 The first 10 data samples in "edges_pm_train.csv" in pmt_pmt dataset are:
