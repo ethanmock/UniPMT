@@ -125,7 +125,7 @@ class Tester():
             df = pd.DataFrame()
             df['prob'] = pm_pred_list
             df['label'] = label_list_pm
-            pred_path = f"../output/predict/result_pm_{config.dataname}.csv"
+            pred_path = f"../output/predictions/result_pm_{config.dataname}.csv"
             df.to_csv(pred_path, index=False)
 
         if 'pt' in evaltask:
@@ -151,7 +151,7 @@ class Tester():
             df = pd.DataFrame()
             df['prob'] = pt_pred_list
             df['label'] = label_list_pt
-            pred_path = f"../output/predict/result_pt_{config.dataname}.csv"
+            pred_path = f"../output/predictions/result_pt_{config.dataname}.csv"
             df.to_csv(pred_path, index=False)
 
         if 'pmt' in evaltask:
@@ -177,7 +177,7 @@ class Tester():
             df = pd.DataFrame()
             df['prob'] = all_preds
             df['label'] = all_labels
-            pred_path = f"../output/predict/result_pmt_{config.dataname}.csv"
+            pred_path = f"../output/predictions/result_pmt_{config.dataname}.csv"
             df.to_csv(pred_path, index=False)
         
     
