@@ -16,7 +16,7 @@ The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unif
 ### Instructions
 1. Install the required packages in requirement.py: `pip install -r requirements.txt`. **Normal install time**: within 1 hour.
 2. Download the datasets (see in `./data/` folder)，and put the datasets in that folder, e.g., `./data/pmt_pmt/`.
-3. Download the model file (see in `./output/model/` folder) and put the trained model file in that folder, e.g., `./output/model/model_pmt_pmt.pt`
+3. Download the model file (see in `./model/` folder) and put the trained model file in that folder, e.g., `./model/model_pmt_pmt.pt`
  - To reproduce the **PMT** results:
    - Modifiy the `code/config/config.py` file: `data_folder = pmt_pmt`.
    - Run the evaluation through `python main.py`. Expected runing time: within 1 min on Nvidia 3090/5 seconds on Nvidia A100.
