@@ -11,7 +11,7 @@ others should be ony a whole file to be splitted by code.
 ==========================================================================
 """
 
-data_folder = 'pm_iedbsame'
+data_folder = 'pmt_pmt'
 # whether run test
 run_test = False
 
@@ -65,7 +65,7 @@ pt_neg_sample = 0
 # train config
 ## get current time in format: 2019-12-12-12-12-12
 #start_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
-model_path = f"../output/model/model_{task}_{dataname}.pt"  # if run_test = True, must be speccified
+model_path = f"../model/model_{task}_{dataname}.pt"  # if run_test = True, must be speccified
 directory = os.path.dirname(model_path)
 if not os.path.exists(directory):
     os.makedirs(directory)
