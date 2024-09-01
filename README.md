@@ -28,6 +28,7 @@ The code and datasets for the model UniPMT proposed in the paper: UniPMT: A Unif
 ### Expected output
 1. The test results (AUC, PRAUC) in the test set. The results will be outputed on the Terminal.
 2. A predicted results scores of each data sample in the test set will be stored in `./output/predictions/`
+3. For easy understanding the score, we have added the files of scores with corresponding sequences in `./output/predictions/` ending with `_with_name.csv`, (e.g., `result_pm_iedbsame_with_name.csv`, `result_pmt_pmt_with_name.csv`)
 
 
 
