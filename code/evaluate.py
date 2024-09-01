@@ -7,6 +7,7 @@ from torch_scatter import scatter_mean
 
 from model import MolGNN
 import config.config as config
+import pdb
 
 
 class Tester():
@@ -92,12 +93,12 @@ class Tester():
         
 
     def pmt_predict(self, pmt_batch):
-        pmt_pos, pmt_neg_list = self.model.pmt_learn(self.p_out_emb, self.m_out_emb, self.t_out_emb, pmt_batch)
+        pmt_pos, pmt_neg_list, pmt_neg_data = self.model.pmt_learn(self.p_out_emb, self.m_out_emb, self.t_out_emb, pmt_batch)
         # get the contrastive loss of positive and negative samples
         pmt_pos = pmt_pos.unsqueeze(0).squeeze(-1)
         pmt_negs = torch.stack(pmt_neg_list).squeeze(-1)
 
-        return pmt_pos, pmt_negs
+        return pmt_pos, pmt_negs, pmt_neg_data
         
 
     def evaluate(self, epoch, evaltask=['pm', 'pt', 'pmt']):
@@ -157,10 +158,15 @@ class Tester():
         if 'pmt' in evaltask:
             pmt_pos_list = []
             pmt_neg_list = []
+            pmt_data_pos = []
+            pmt_data_neg = []
             for pmt_batch in self.pmt_loader_test:
-                pmt_pos, pmt_negs = self.pmt_predict(pmt_batch)
+                pmt_pos, pmt_negs, pmt_neg_data = self.pmt_predict(pmt_batch)
                 pmt_pos_list += pmt_pos
                 pmt_neg_list += pmt_negs
+
+                pmt_data_pos.append(pmt_batch)
+                pmt_data_neg.append(pmt_neg_data)
 
             pmt_pos_all = torch.concat(pmt_pos_list).cpu().detach().numpy()
             pmt_neg_all = torch.concat(pmt_neg_list).cpu().detach().numpy()
@@ -173,8 +179,14 @@ class Tester():
             pmt_prauc = auc(pmt_rec,pmt_pre)
             print(f"PMT AUC: {pmt_auc:.4f}, PMT PRAUC: {pmt_prauc:.4f}")
             print()
+            pmt_data_pos = torch.cat(pmt_data_pos, dim=0).cpu().detach().numpy()
+            pmt_data_neg = torch.cat(pmt_data_neg, dim=0).cpu().detach().numpy()
+            pmt_data_all = np.concatenate([pmt_data_pos, pmt_data_neg])
 
             df = pd.DataFrame()
+            #df['Peptide'] = pmt_data_all[:, 0]
+            #df['MHC'] = pmt_data_all[:, 1]
+            #df['TCR'] = pmt_data_all[:, 2]
             df['prob'] = all_preds
             df['label'] = all_labels
             pred_path = f"../output/predictions/result_pmt_{config.dataname}.csv"

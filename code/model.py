@@ -1,11 +1,10 @@
-import pdb
-
 import numpy as np
 from torch import nn
 import torch
 import torch.nn.functional as F
 from torch_geometric.nn import SAGEConv, to_hetero
 import config.config as config
+import pdb
 
 
 class MolGNN(nn.Module):
@@ -167,10 +166,12 @@ class MolGNN(nn.Module):
         pmt_pos = self.pmt_cross(pm_pos, mt_pos)
 
         pmt_neg = []
+        pmt_data_neg = []
 
         for i in range(config.pmt_run_negative):
             random_indexs_m = torch.randint(0, self.m_num, (n_sample,))
             random_indexs_t = torch.randint(0, self.t_num, (n_sample,))
+            pmt_data_neg.append(torch.stack((pmt_batch[:, 0], random_indexs_m, random_indexs_t), dim=1))
 
             p_emb_neg = p_emb
             m_emb_neg = m_out_emb[random_indexs_m]
@@ -181,8 +182,10 @@ class MolGNN(nn.Module):
 
             # get all the permutation of pmt_neg
             pmt_neg.append(self.pmt_cross(pm_neg, mt_neg))
+        
+        pmt_data_neg = torch.cat(pmt_data_neg, dim=0)
 
-        return pmt_pos, pmt_neg
+        return pmt_pos, pmt_neg, pmt_data_neg
 
     def pt_pred(self, p_emb, t_emb, m_emb):
 
